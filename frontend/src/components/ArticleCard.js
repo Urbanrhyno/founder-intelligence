@@ -12,7 +12,7 @@ export function ArticleCard({ article }) {
           href={url}
           target="_blank"
           rel="noopener noreferrer"
-          className="hover:text-red-500 transition"
+          className="hover:text-alpine-500 transition"
         >
           {title}
         </a>
@@ -29,7 +29,7 @@ export function ArticleCard({ article }) {
           href={url}
           target="_blank"
           rel="noopener noreferrer"
-          className="text-red-600 hover:text-red-500"
+          className="text-alpine-600 hover:text-alpine-500"
         >
           Read →
         </a>

@@ -7,12 +7,12 @@ export default {
   theme: {
     extend: {
       colors: {
-        accent: {
-          DEFAULT: '#dc2626',
-          hover: '#ef4444',
-        },
-      },
-    },
+        obsidian: "#101820",
+        teal: "#00313C",
+        alpine: "#73D8E0",
+        brandwhite: "#FFFFFF"
+      }
+    }
   },
   plugins: [],
 };

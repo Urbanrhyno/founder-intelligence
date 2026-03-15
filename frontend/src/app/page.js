@@ -23,11 +23,11 @@ export default async function HomePage() {
   }
 
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className="min-h-screen bg-obsidian text-brandwhite">
       <header className="border-b border-neutral-800 py-6">
         <div className="mx-auto max-w-4xl px-4">
           <h1 className="text-2xl font-bold tracking-tight text-white">
-            Founder <span className="text-red-600">Intelligence</span>
+            Founder <span className="text-alpine-600">Intelligence</span>
           </h1>
           <p className="mt-1 text-sm text-neutral-400">
             Curated insights for startup founders
