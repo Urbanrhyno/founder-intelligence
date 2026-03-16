@@ -11,14 +11,18 @@ const CATEGORIES = ['funding', 'founder_stories', 'ai', 'scalable_business']
  * Classify and score an article using a reasoning-style prompt. Returns strict JSON shape.
  * @param {string} title
  * @param {string} description
- * @param {{ source?: string, publishedAt?: Date }} [opts] - optional for recency and source credibility scoring
+ * @param {{ source?: string, publishedAt?: Date, category_bias?: string }} [opts] - optional for recency, source credibility, and category hint
  * @returns {Promise<{ category: string, summary: string, score: number }>}
  */
 export async function processArticle(title, description, opts = {}) {
-  const { source = 'Unknown', publishedAt } = opts
+  const { source = 'Unknown', publishedAt, category_bias } = opts
   const ageHours = publishedAt
     ? Math.max(0, (Date.now() - new Date(publishedAt).getTime()) / (1000 * 60 * 60))
     : 0
+
+  const categoryHint = category_bias && CATEGORIES.includes(category_bias)
+    ? `\nThis source is known for "${category_bias}" content. When the article is clearly about growth, scaling, company building, or operations, prefer category: ${category_bias}.`
+    : ''
 
   const prompt = `You are a classifier and scorer for a startup founder news aggregator.
 
@@ -29,7 +33,7 @@ Consider these factors when scoring (0-100):
 - Technical importance: AI, eng, product insights
 - Source credibility: "${source}" (well-known publications score higher)
 
-Classify into exactly ONE category: funding, founder_stories, ai, scalable_business.
+Classify into exactly ONE category: funding, founder_stories, ai, scalable_business.${categoryHint}
 
 Write a short 2-3 sentence founder-focused summary.
 

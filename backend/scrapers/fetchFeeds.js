@@ -37,7 +37,7 @@ export async function fetchFeeds() {
   console.log('Fetching feeds...')
 
   const allItems = []
-  const feeds = SOURCES.map((s) => ({ name: s.name, url: s.rss_url || s.url }))
+  const feeds = SOURCES.map((s) => ({ name: s.name, url: s.rss_url || s.url, category_bias: s.category_bias }))
 
   for (const feed of feeds) {
     try {
@@ -56,6 +56,7 @@ export async function fetchFeeds() {
           source: feed.name,
           publishedDate: publishedAt,
           description: description.slice(0, 2000) || null,
+          category_bias: feed.category_bias,
         }
       })
       allItems.push(...items.filter((i) => i.title && i.link))
@@ -84,6 +85,7 @@ export async function fetchFeeds() {
             processArticle(item.title, item.description || '', {
               source: item.source,
               publishedAt: item.publishedDate,
+              category_bias: item.category_bias,
             })
           )
         )
