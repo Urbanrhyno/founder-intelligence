@@ -10,6 +10,9 @@ const plusJakarta = Plus_Jakarta_Sans({
 export const metadata = {
   title: 'Founder Intelligence',
   description: 'High-quality articles and insights for startup founders.',
+  icons: {
+    icon: '/gorkha-favicon.png',
+  },
 };
 
 export default function RootLayout({ children }) {

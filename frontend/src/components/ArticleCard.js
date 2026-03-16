@@ -5,14 +5,21 @@ export function ArticleCard({ article }) {
   const summary = article.summary ?? '';
   const source = article.source ?? 'Unknown';
 
+  const publishedAtRaw = article.published_at ?? article.publishedAt ?? null;
+  const publishedAt = publishedAtRaw ? new Date(publishedAtRaw) : null;
+  const isValidDate = publishedAt && !Number.isNaN(publishedAt.getTime());
+  let publishedLabel = '';
+
+  if (isValidDate) {
+    const day = String(publishedAt.getDate()).padStart(2, '0');
+    const month = String(publishedAt.getMonth() + 1).padStart(2, '0');
+    const year = String(publishedAt.getFullYear()).slice(-2);
+    publishedLabel = `${day}/${month}/${year}`;
+  }
+
   return (
     <article className="rounded-lg border border-teal/30 bg-teal/5 p-6 transition hover:border-alpine/50 hover:bg-teal/10">
-      <div className="flex items-start justify-between gap-4">
-        <span className="text-xs uppercase tracking-wider text-neutral-500 shrink-0">
-          {source}
-        </span>
-      </div>
-      <h3 className="font-heading mt-2 text-xl font-bold text-white leading-snug">
+      <h3 className="font-heading text-xl font-bold text-white leading-snug">
         <a
           href={url}
           target="_blank"
@@ -27,14 +34,21 @@ export function ArticleCard({ article }) {
           {summary}
         </p>
       ) : null}
-      <a
-        href={url}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="mt-4 inline-block text-sm font-medium text-alpine hover:text-white transition underline underline-offset-2"
-      >
-        Read more
-      </a>
+
+      <div className="mt-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+        <div className="text-xs text-neutral-500">
+          <span>{source}</span>
+          {publishedLabel ? <span>{' · '}{publishedLabel}</span> : null}
+        </div>
+        <a
+          href={url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-sm font-medium text-alpine hover:text-white transition underline underline-offset-2"
+        >
+          Read more
+        </a>
+      </div>
     </article>
   );
 }
