@@ -8,9 +8,10 @@ export default {
     extend: {
       colors: {
         obsidian: "#101820",
-        teal: "#00313C",
-        alpine: "#73D8E0",
-        brandwhite: "#FFFFFF"
+        teal: "#00313c",
+        alpine: "#73d8e0",
+        white: "#ffffff",
+        brandwhite: "#ffffff"
       }
     }
   },

@@ -24,10 +24,10 @@ export default async function HomePage() {
 
   return (
     <div className="min-h-screen bg-obsidian text-brandwhite">
-      <header className="border-b border-neutral-800 py-6">
+      <header className="border-b border-teal/40 py-6">
         <div className="mx-auto max-w-4xl px-4">
           <h1 className="text-2xl font-bold tracking-tight text-white">
-            Founder <span className="text-alpine-600">Intelligence</span>
+            Founder <span className="text-alpine">Intelligence</span>
           </h1>
           <p className="mt-1 text-sm text-neutral-400">
             Curated insights for startup founders
@@ -49,9 +49,9 @@ export default async function HomePage() {
         ))}
       </main>
 
-      <footer className="border-t border-neutral-800 py-6 mt-12">
+      <footer className="border-t border-teal/40 py-6 mt-12">
         <div className="mx-auto max-w-4xl px-4 text-center text-neutral-500 text-sm">
-          Founder Intelligence — Refreshed every 2 hours
+          Founder Intelligence — Refreshed 4 times daily
         </div>
       </footer>
     </div>

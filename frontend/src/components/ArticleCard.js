@@ -6,34 +6,33 @@ export function ArticleCard({ article }) {
   const source = article.source ?? 'Unknown';
 
   return (
-    <article className="rounded-lg border border-neutral-800 bg-neutral-900/50 p-4 transition hover:border-neutral-700">
-      <h3 className="font-medium text-white">
+    <article className="rounded-lg border border-teal/30 bg-teal/5 p-5 transition hover:border-alpine/50 hover:bg-teal/10 space-y-3">
+      <h3 className="font-semibold text-lg text-white leading-snug">
         <a
           href={url}
           target="_blank"
           rel="noopener noreferrer"
-          className="hover:text-alpine-500 transition"
+          className="text-white hover:text-alpine transition"
         >
           {title}
         </a>
       </h3>
       {summary ? (
-        <p className="mt-2 text-sm text-neutral-400 leading-relaxed">
+        <p className="text-sm text-neutral-400 leading-relaxed line-clamp-3">
           {summary}
         </p>
       ) : null}
-      <p className="mt-2 text-xs text-neutral-500">
-        <span className="text-neutral-400">{source}</span>
-        {' · '}
+      <div className="flex items-center justify-between gap-2 pt-1">
+        <span className="text-xs text-neutral-500">{source}</span>
         <a
           href={url}
           target="_blank"
           rel="noopener noreferrer"
-          className="text-alpine-600 hover:text-alpine-500"
+          className="text-xs font-medium text-alpine hover:text-white transition"
         >
-          Read →
+          Read article →
         </a>
-      </p>
+      </div>
     </article>
   );
 }
