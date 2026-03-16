@@ -6,6 +6,10 @@ export default {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        heading: ['var(--font-plus-jakarta)', 'system-ui', 'sans-serif'],
+        sans: ['var(--font-plus-jakarta)', 'system-ui', 'sans-serif'],
+      },
       colors: {
         obsidian: "#101820",
         teal: "#00313c",

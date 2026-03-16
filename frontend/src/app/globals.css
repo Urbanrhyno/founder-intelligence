@@ -3,11 +3,11 @@
 @tailwind utilities;
 
 :root {
-  --accent: #dc2626;
-  --accent-hover: #ef4444;
-  --bg: #000000;
-  --card: #0a0a0a;
-  --border: #1f1f1f;
+  --accent: #73d8e0;
+  --accent-hover: #5fc9d1;
+  --bg: #101820;
+  --card: #0a1920;
+  --border: rgba(0, 49, 60, 0.4);
   --muted: #737373;
 }
 

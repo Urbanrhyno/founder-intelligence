@@ -22,36 +22,73 @@ export default async function HomePage() {
     sectionsWithArticles = SECTIONS.map(({ category, title }) => ({ category, title, articles: [] }));
   }
 
+  const featuredArticle = sectionsWithArticles[0]?.articles?.length > 0
+    ? sectionsWithArticles[0].articles[0]
+    : null;
+  const firstSectionArticles = featuredArticle
+    ? sectionsWithArticles[0].articles.slice(1)
+    : (sectionsWithArticles[0]?.articles ?? []);
+
   return (
-    <div className="min-h-screen bg-obsidian text-brandwhite">
-      <header className="border-b border-teal/40 py-6">
-        <div className="mx-auto max-w-4xl px-4">
-          <h1 className="text-2xl font-bold tracking-tight text-white">
-            Founder <span className="text-alpine">Intelligence</span>
+    <div className="min-h-screen bg-obsidian text-brandwhite font-sans">
+      <header className="border-b border-teal/40">
+        <div className="mx-auto max-w-4xl px-4 py-16 md:py-20">
+          <h1 className="font-heading text-4xl md:text-5xl font-bold tracking-tight text-white leading-tight">
+            Intelligence
+            <br />
+            <span className="text-alpine">for founders</span>
           </h1>
-          <p className="mt-1 text-sm text-neutral-400">
-            Curated insights for startup founders
+          <p className="mt-5 text-lg text-neutral-400 max-w-2xl">
+            High-signal startup, AI, and funding news—refreshed for you four times daily.
           </p>
         </div>
       </header>
 
-      <main className="mx-auto max-w-4xl px-4 py-10">
-        {sectionsWithArticles.map(({ category, title, articles }) => (
-          <Section key={category} title={title}>
-            {articles.length === 0 ? (
-              <p className="text-neutral-500 text-sm">No articles yet. Run the backend cron to ingest.</p>
-            ) : (
-              articles.map((article) => (
-                <ArticleCard key={article.id} article={article} />
-              ))
-            )}
-          </Section>
-        ))}
+      <main className="mx-auto max-w-4xl px-4 py-12">
+        {featuredArticle && (
+          <section className="mb-16">
+            <p className="text-xs uppercase tracking-wider text-neutral-500 mb-2">Top story</p>
+            <a
+              href={featuredArticle.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block rounded-lg border border-teal/30 bg-teal/5 p-6 md:p-8 transition hover:border-alpine/50 hover:bg-teal/10"
+            >
+              <span className="text-xs text-neutral-500">{featuredArticle.source}</span>
+              <h2 className="font-heading mt-2 text-2xl md:text-3xl font-bold text-white leading-snug hover:text-alpine transition">
+                {featuredArticle.title ?? 'Untitled'}
+              </h2>
+              {featuredArticle.summary && (
+                <p className="mt-3 text-neutral-400 leading-relaxed line-clamp-2">
+                  {featuredArticle.summary}
+                </p>
+              )}
+              <span className="mt-4 inline-block text-sm font-medium text-alpine">Read more →</span>
+            </a>
+          </section>
+        )}
+
+        {sectionsWithArticles.map(({ category, title }, index) => {
+          const articles = index === 0 ? firstSectionArticles : sectionsWithArticles[index].articles;
+          return (
+            <Section key={category} title={title} subtitle={index === 0 ? 'Latest in funding & exits' : undefined}>
+              {articles.length === 0 ? (
+                <p className="text-neutral-500 text-sm">No articles yet. Run the backend cron to ingest.</p>
+              ) : (
+                articles.map((article) => (
+                  <ArticleCard key={article.id} article={article} />
+                ))
+              )}
+            </Section>
+          );
+        })}
       </main>
 
-      <footer className="border-t border-teal/40 py-6 mt-12">
+      <footer className="border-t border-teal/40 py-8 mt-16">
         <div className="mx-auto max-w-4xl px-4 text-center text-neutral-500 text-sm">
-          Founder Intelligence — Refreshed 4 times daily
+          <span className="text-alpine font-medium">Founder Intelligence</span>
+          {' — '}
+          Curated for founders. Refreshed 4 times daily.
         </div>
       </footer>
     </div>

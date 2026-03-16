@@ -1,4 +1,11 @@
 import './globals.css';
+import { Plus_Jakarta_Sans } from 'next/font/google';
+
+const plusJakarta = Plus_Jakarta_Sans({
+  subsets: ['latin'],
+  variable: '--font-plus-jakarta',
+  display: 'swap',
+});
 
 export const metadata = {
   title: 'Founder Intelligence',
@@ -8,7 +15,9 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className="dark">
-      <body className="bg-obsidian text-white antialiased">{children}</body>
+      <body className={`${plusJakarta.variable} font-sans bg-obsidian text-white antialiased`}>
+        {children}
+      </body>
     </html>
   );
 }
