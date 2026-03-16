@@ -36,15 +36,17 @@ export function ArticleCard({ article }) {
       ) : null}
 
       <div className="mt-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
-        <div className="text-xs text-neutral-500">
-          <span>{source}</span>
-          {publishedLabel ? <span>{' · '}{publishedLabel}</span> : null}
+        <div className="flex items-center gap-3 text-xs text-neutral-500">
+          <span className="font-semibold text-white">{source}</span>
+          {publishedLabel ? (
+            <span className="font-semibold text-white">{publishedLabel}</span>
+          ) : null}
         </div>
         <a
           href={url}
           target="_blank"
           rel="noopener noreferrer"
-          className="text-sm font-medium text-alpine hover:text-white transition underline underline-offset-2"
+          className="text-xs sm:text-sm font-semibold text-alpine hover:text-white transition underline underline-offset-2"
         >
           Read more
         </a>

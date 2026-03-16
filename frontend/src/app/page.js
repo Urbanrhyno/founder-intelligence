@@ -63,24 +63,28 @@ export default async function HomePage() {
                     {featuredArticle.summary}
                   </p>
                 )}
-                <div className="mt-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 text-xs text-neutral-500">
-                  <span>{featuredArticle.source ?? 'Unknown'}</span>
-                  {featuredArticle.published_at && (
-                    <span>
-                      {(() => {
-                        const d = new Date(featuredArticle.published_at);
-                        if (Number.isNaN(d.getTime())) return null;
-                        const day = String(d.getDate()).padStart(2, '0');
-                        const month = String(d.getMonth() + 1).padStart(2, '0');
-                        const year = String(d.getFullYear()).slice(-2);
-                        return `${day}/${month}/${year}`;
-                      })()}
+                <div className="mt-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+                  <div className="flex items-center gap-3 text-xs text-neutral-500">
+                    <span className="font-semibold text-white">
+                      {featuredArticle.source ?? 'Unknown'}
                     </span>
-                  )}
+                    {featuredArticle.published_at && (
+                      <span className="font-semibold text-white">
+                        {(() => {
+                          const d = new Date(featuredArticle.published_at);
+                          if (Number.isNaN(d.getTime())) return null;
+                          const day = String(d.getDate()).padStart(2, '0');
+                          const month = String(d.getMonth() + 1).padStart(2, '0');
+                          const year = String(d.getFullYear()).slice(-2);
+                          return `${day}/${month}/${year}`;
+                        })()}
+                      </span>
+                    )}
+                  </div>
+                  <span className="text-xs sm:text-sm font-semibold text-alpine hover:text-white transition underline underline-offset-2">
+                    Read more
+                  </span>
                 </div>
-                <span className="mt-3 inline-block text-sm font-medium text-alpine hover:text-white transition underline underline-offset-2">
-                  Read more
-                </span>
               </a>
             </section>
           )}
