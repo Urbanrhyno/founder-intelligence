@@ -1,6 +1,6 @@
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0"
 
-import { processArticle } from "../services/aiProcessor.js"
+import { processArticle, processArticlesBatch } from "../services/aiProcessor.js"
 import { SOURCES } from "../config/sources.js"
 import 'dotenv/config'
 import Parser from "rss-parser"
@@ -80,14 +80,14 @@ export async function fetchFeeds() {
     let results
     for (let attempt = 1; attempt <= 3; attempt++) {
       try {
-        results = await Promise.all(
-          batch.map((item) =>
-            processArticle(item.title, item.description || '', {
-              source: item.source,
-              publishedAt: item.publishedDate,
-              category_bias: item.category_bias,
-            })
-          )
+        results = await processArticlesBatch(
+          batch.map((item) => ({
+            title: item.title,
+            description: item.description || '',
+            source: item.source,
+            publishedAt: item.publishedDate,
+            category_bias: item.category_bias,
+          }))
         )
         break
       } catch (err) {
@@ -97,7 +97,18 @@ export async function fetchFeeds() {
           console.log(`Rate limited (TPM), waiting ${wait / 1000}s before retry...`)
           await new Promise((r) => setTimeout(r, wait))
         } else {
-          throw err
+          console.error('[Ingestion] Batch processing failed, falling back to single-article calls.', err.message)
+          // Fallback: process each article individually so we don't lose all items
+          results = await Promise.all(
+            batch.map((item) =>
+              processArticle(item.title, item.description || '', {
+                source: item.source,
+                publishedAt: item.publishedDate,
+                category_bias: item.category_bias,
+              })
+            )
+          )
+          break
         }
       }
     }

@@ -1,32 +1,48 @@
 import { supabase } from "./supabase"
 
+const CATEGORY_KEYS = ["funding", "founder_stories", "ai", "scalable_business"]
+
 /**
- * Fetch top articles for a category from the last 24 hours, ordered by score then recency.
- * @param {string} category - funding | founder_stories | ai | scalable_business
- * @param {number} limit
+ * Single-query fetch for all homepage sections.
+ * Returns a map from category -> top N articles from the last 24 hours.
+ * @param {number} limitPerCategory
+ * @returns {Promise<Record<string, any[]>>}
  */
-export async function fetchArticles(category, limit = 5) {
+export async function fetchAllArticlesForHome(limitPerCategory = 5) {
   const twentyFourHoursAgo = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString()
 
-  let query = supabase
+  const { data, error } = await supabase
     .from("articles")
     .select("*")
     .gte("published_at", twentyFourHoursAgo)
     .not("score", "is", null)
     .order("score", { ascending: false })
     .order("published_at", { ascending: false })
-    .limit(limit)
-
-  if (category) {
-    query = query.eq("category", category)
-  }
-
-  const { data, error } = await query
 
   if (error) {
     console.error(error)
-    return []
+    return {
+      funding: [],
+      founder_stories: [],
+      ai: [],
+      scalable_business: [],
+    }
   }
 
-  return data || []
+  const byCategory = {
+    funding: [],
+    founder_stories: [],
+    ai: [],
+    scalable_business: [],
+  }
+
+  for (const article of data || []) {
+    const cat = CATEGORY_KEYS.includes(article.category) ? article.category : null
+    if (!cat) continue
+    if (byCategory[cat].length < limitPerCategory) {
+      byCategory[cat].push(article)
+    }
+  }
+
+  return byCategory
 }

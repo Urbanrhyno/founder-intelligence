@@ -23,7 +23,8 @@
     "openai": "^4.52.0",
     "pg": "^8.20.0",
     "rss-parser": "^3.13.0",
-    "string-similarity": "^4.0.4"
+    "string-similarity": "^4.0.4",
+    "ws": "^8.19.0"
   },
   "devDependencies": {
     "prisma": "^7.5.0"
