@@ -32,12 +32,16 @@ Production-ready full-stack app that collects high-quality articles for startup 
 | `OPENAI_API_KEY` | OpenAI API key for classification and summaries |
 | `DATABASE_URL`   | PostgreSQL connection string, e.g. `postgresql://user:password@localhost:5432/founder_intelligence` |
 | `PORT`           | Optional; API port (default `3001`)  |
+| `CRON_SECRET`    | Shared secret for protected cron trigger endpoint |
 
 ### Frontend (`frontend/.env.local`)
 
 | Variable              | Description                    |
 |-----------------------|--------------------------------|
 | `NEXT_PUBLIC_API_URL` | Backend base URL (e.g. `http://localhost:3001`) |
+| `BACKEND_CRON_URL`    | Backend cron endpoint URL (e.g. `https://news.gorkhaventures.com/cron/run`) |
+| `CRON_SECRET`         | Secret Vercel uses to call `/api/cron` (`Authorization: Bearer ...`) |
+| `BACKEND_CRON_SECRET` | Secret forwarded by `/api/cron` to backend; defaults to `CRON_SECRET` if unset |
 
 ## Setup
 
@@ -66,6 +70,11 @@ npm run dev
   npm run cron
   ```
 
+- Manual trigger endpoint (secured with `CRON_SECRET`):
+  ```bash
+  curl -X POST http://localhost:3001/cron/run -H "Authorization: Bearer <CRON_SECRET>"
+  ```
+
 ### 3. Frontend
 
 ```bash
@@ -78,6 +87,7 @@ npm run dev
 ```
 
 - Open [http://localhost:3000](http://localhost:3000).
+- For Vercel Cron, add `frontend/vercel.json` and set frontend env vars (`BACKEND_CRON_URL`, `CRON_SECRET`, `BACKEND_CRON_SECRET`).
 
 ## API
 

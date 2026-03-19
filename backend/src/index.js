@@ -3,6 +3,7 @@ import express from "express"
 import cors from "cors"
 import http from "http"
 import { WebSocketServer } from "ws"
+import cronRouter from "./routes/cron.js"
 
 import "./cron/scheduler.js"
 
@@ -10,6 +11,7 @@ const app = express()
 
 app.use(cors())
 app.use(express.json())
+app.use("/cron", cronRouter)
 
 app.get("/", (req, res) => {
   res.send("Founder Intelligence API is running")
