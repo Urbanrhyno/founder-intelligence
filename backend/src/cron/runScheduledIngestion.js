@@ -9,6 +9,7 @@ let isIngestionRunning = false
  */
 export async function runScheduledIngestion() {
   if (isIngestionRunning) {
+    console.warn("[Ingestion Runner] Skip: ingestion already in progress")
     return {
       ok: false,
       skipped: true,
@@ -17,20 +18,30 @@ export async function runScheduledIngestion() {
   }
 
   isIngestionRunning = true
+  const startedAt = Date.now()
   try {
-    console.log("Running RSS news ingestion...")
+    console.log("[Ingestion Runner] Running RSS news ingestion...")
     const rssResult = await fetchFeeds()
+    console.log(`[Ingestion Runner] RSS completed: inserted=${rssResult?.inserted ?? "n/a"} recent=${rssResult?.recent ?? "n/a"}`)
 
-    console.log("Running GNews ingestion (experimental)...")
+    console.log("[Ingestion Runner] Running GNews ingestion (experimental)...")
     const gnewsResult = await fetchGNewsArticles()
+    console.log(
+      `[Ingestion Runner] GNews completed: inserted=${gnewsResult?.inserted ?? "n/a"} recent=${gnewsResult?.recent ?? "n/a"}`
+    )
 
+    const at = new Date().toISOString()
+    console.log(`[Ingestion Runner] Completed successfully at=${at} elapsed_ms=${Date.now() - startedAt}`)
     return {
       ok: true,
       skipped: false,
       rss: rssResult,
       gnews: gnewsResult,
-      at: new Date().toISOString(),
+      at,
     }
+  } catch (err) {
+    console.error("[Ingestion Runner] Failed:", err)
+    throw err
   } finally {
     isIngestionRunning = false
   }
